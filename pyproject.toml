@@ -10,4 +10,5 @@ dependencies = [
     "pyexcel>=0.7.1",
     "pyexcel-xls>=0.7.0",
     "pyexcel-xlsx>=0.6.0",
+    "streamlit>=1.41.1",
 ]

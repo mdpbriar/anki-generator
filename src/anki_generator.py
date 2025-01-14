@@ -1,9 +1,12 @@
+import os
 import random
 from pathlib import Path
 
 import genanki
 import pyexcel
 from random import randrange
+
+tmp_folder = '/tmp'
 
 def is_castable_to_int(input_string):
     try:
@@ -69,12 +72,16 @@ class AnkiGenerator:
 
             self.deck.add_note(my_note)
 
-    def generate_anki(self) -> None:
+    def generate_anki(self) -> [str, int]:
         book = pyexcel.get_book(file_name=self.excel_path)
         sheet_names = book.sheet_names()
         for sheet_name in sheet_names:
             self._extract_data_from_sheet(sheet_name)
 
-        genanki.Package(self.deck).write_to_file(f"{self.deck.name}.apkg")
+        file_path = os.path.join(tmp_folder,f"{self.deck.name}.apkg")
+
+        genanki.Package(self.deck).write_to_file(file_path)
 
         print(f"The deck has been generated with id {self.deck.deck_id}, keep this ID, next time you generate the deck, input the id to update the package")
+
+        return file_path, self.deck.deck_id
