@@ -40,6 +40,8 @@ class AnkiGenerator:
 
         sheet = pyexcel.get_sheet(file_name=self.excel_path, sheet_name=sheet_name)
         question = sheet[0, 1]
+        start_sort = sheet[1, 1]
+        start_sort = 0 if not start_sort or not is_castable_to_int(start_sort) else int(start_sort)
 
         random.seed(sheet_name)
         model_id = random.randrange(1 << 30, 1 << 31)
@@ -59,20 +61,33 @@ class AnkiGenerator:
                 },
             ])
         records = pyexcel.get_array(file_name=self.excel_path, sheet_name=sheet_name, start_row=3)
-        for record in records:
+        notes = []
+        for index, record in enumerate(records):
             if record[0] == '' or record[1] == '':
                 continue
-            my_note = genanki.Note(
-                model=my_model,
-                fields=[record[0], record[1]])
+            notes.append(
+                (
+                    genanki.Note(
+                        model=my_model,
+                        fields=[record[0], record[1]],
+                    ),
+                    index + start_sort
+                )
+            )
 
-            self.deck.add_note(my_note)
+        return notes
 
     def generate_anki(self) -> [str, int]:
         book = pyexcel.get_book(file_name=self.excel_path)
         sheet_names = book.sheet_names()
+        notes = []
         for sheet_name in sheet_names:
-            self._extract_data_from_sheet(sheet_name)
+            notes.extend(self._extract_data_from_sheet(sheet_name))
+
+        notes = sorted(notes, key=lambda tup: tup[1])
+
+        for note, index in notes:
+            self.deck.add_note(note)
 
         file_path = os.path.join(tmp_folder,f"{self.deck.name}.apkg")
 

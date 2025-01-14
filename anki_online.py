@@ -18,6 +18,9 @@ def main():
     - each sheet has a unique name and a question associated with it
     - the question must be written in cell B1
     - a series of question/answers must be written on two columns (A and B), starting row 4
+    - You can raise the difficulty of a sheet. Anki will take the first lines in first order by default, it means that the
+    first questions asked will be the ones on top of your sheets. If you want to make a sheet more difficult and appear later, 
+    you can add a number in cell B2, more the number will be high, later the questions will appear in your deck
     
     Deck ID:
     **You should always keep the same name for your excel file !!**\\
