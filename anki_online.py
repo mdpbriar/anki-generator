@@ -19,14 +19,14 @@ def main():
     - a series of question/answers must be written on two columns (A and B), starting row 4
     
     Deck ID:
-    You need to keep the same ID for a deck if you want to update it instead of installing it as new.\\
-    If your file has an id ("file_name-id.xls"), the deck will be generated with this id.\\
-    If you didn't put any id in the file, an id will be generated.\\
-    Keep this id and rename your file with adding "-" at the end and the id generated.
+    **You should always keep the same name for your excel file !!**\\
+    This name will be used to generate the deck id, if you change the excel name, the id will be changed automatically, 
+    and it will be considered as new deck, and not as a new version for the same deck.
     
-    Ex: if you upload **"my_super_anki_deck.xls"**, the id **1220592972** might be generated.\\
-    Rename then your xls file to **"my_super_anki_deck-1220592972.xls"**, so the next time you upload it, the deck will be generated with the same id
+    This apply too for the sheet names, keep the same sheet names, you can change the questions in B1, but always keep the same sheet names.
     """
+
+    st.set_page_config(page_title="Anki Generator", page_icon=":material/edit:")
 
     st.title("Anki Generator")
 
@@ -49,7 +49,7 @@ def main():
         if os.path.exists(anki_path):
             file_name = Path(anki_path).name
             with open(anki_path, "rb") as f:
-                st.download_button("Download anki file", f, file_name, False)
+                st.download_button("Download Anki deck", f, file_name, False)
 
 
 

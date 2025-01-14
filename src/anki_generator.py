@@ -27,13 +27,9 @@ class AnkiGenerator:
 
         # get the deck name from file name
         anki_deck_name = Path(excel_path).stem
-        parts = anki_deck_name.split("-")
-        id = parts[-1]
-        if is_castable_to_int(id) and int(id) in range(1 << 30, 1 << 31):
-        # if 1 << 30 <= id <= 1 << 31:
-            deck_id = int(id)
-        else:
-            deck_id = randrange(1 << 30, 1 << 31)
+        random.seed(anki_deck_name)
+
+        deck_id = randrange(1 << 30, 1 << 31)
 
         print(f"Anki deck name: {anki_deck_name}")
 
