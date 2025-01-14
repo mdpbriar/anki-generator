@@ -1,3 +1,5 @@
 .idea
 *.apkg
 *.ods
+*.xls
+*.xlsx
