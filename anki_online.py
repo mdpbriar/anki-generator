@@ -7,6 +7,7 @@ from src.anki_generator import AnkiGenerator
 
 tmp_folder = "/tmp"
 
+template_file = "src/template.xls"
 
 def main():
     # print("Hello from anki-generator!")
@@ -32,6 +33,11 @@ def main():
 
     st.markdown(intro_text)
 
+    if os.path.exists(template_file):
+        with open(template_file, "rb") as f:
+            st.download_button("Download Excel Template", f, "template.xls")
+
+
     uploaded_file = st.file_uploader("Upload an .xls or a .ods", type=[".xls", ".ods"])
     if uploaded_file is not None:
         bytes_data = uploaded_file.read()
@@ -45,6 +51,7 @@ def main():
         anki_path, deck_id = anki_generator.generate_anki()
         print(anki_path)
         st.write("Your deck has the following ID: {}".format(deck_id))
+
 
         if os.path.exists(anki_path):
             file_name = Path(anki_path).name
