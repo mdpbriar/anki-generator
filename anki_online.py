@@ -21,6 +21,8 @@ def main():
     - You can raise the difficulty of a sheet. Anki will take the first lines in first order by default, it means that the
     first questions asked will be the ones on top of your sheets. If you want to make a sheet more difficult and appear later, 
     you can add a number in cell B2, more the number will be high, later the questions will appear in your deck
+    - on top of each columns, in the 6th row, you can add the code of the language you want your text being read ('en', 'fr', 'nl', etc.),
+    the algorithm will use google to add a sound file to your package.
     
     Deck ID:
     **You should always keep the same name for your excel file !!**\\
@@ -42,6 +44,8 @@ def main():
 
     st.write("Once you excel file is ready, you can upload it below :")
 
+    voice_on = st.toggle("Add voice", help="Toggle this on to add google speech to your cards")
+
     uploaded_file = st.file_uploader("Upload an .xls or a .ods", type=[".xls", ".ods"], help="Upload your excel file here")
     if uploaded_file is not None:
         bytes_data = uploaded_file.read()
@@ -51,9 +55,8 @@ def main():
         with open(file_path, "wb") as f:
             f.write(bytes_data)
 
-        anki_generator = AnkiGenerator(excel_path=file_path)
+        anki_generator = AnkiGenerator(excel_path=file_path, voice_to_speech=voice_on)
         anki_path, deck_id = anki_generator.generate_anki()
-        print(anki_path)
         st.write("Your deck has the following ID: {}".format(deck_id))
 
 
