@@ -40,8 +40,9 @@ def main():
         with open(template_file, "rb") as f:
             st.download_button("Download Excel Template", f, "template.xls")
 
+    st.write("Once you excel file is ready, you can upload it below :")
 
-    uploaded_file = st.file_uploader("Upload an .xls or a .ods", type=[".xls", ".ods"])
+    uploaded_file = st.file_uploader("Upload an .xls or a .ods", type=[".xls", ".ods"], help="Upload your excel file here")
     if uploaded_file is not None:
         bytes_data = uploaded_file.read()
 
@@ -62,6 +63,7 @@ def main():
                 st.download_button("Download Anki deck", f, file_name, False)
 
 
+    st.page_link("https://github.com/mdpbriar/anki-generator/", label="Github repository")
 
 
 if __name__ == "__main__":

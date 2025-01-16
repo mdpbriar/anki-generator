@@ -60,7 +60,7 @@ class AnkiGenerator:
                     'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
                 },
             ])
-        records = pyexcel.get_array(file_name=self.excel_path, sheet_name=sheet_name, start_row=3)
+        records = pyexcel.get_array(file_name=self.excel_path, sheet_name=sheet_name, start_row=6)
         notes = []
         for index, record in enumerate(records):
             if record[0] == '' or record[1] == '':
