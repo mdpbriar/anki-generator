@@ -2,6 +2,7 @@ import os
 import random
 import tempfile
 from pathlib import Path
+from typing import ClassVar
 
 import genanki
 import pyexcel
@@ -12,6 +13,9 @@ from src.anki_excel_sheet import AnkiExcelSheet
 tmp_folder = tempfile.gettempdir()
 
 class AnkiGenerator:
+
+    MAX_NOTES:ClassVar = 15000
+    MAX_NOTES_WITH_VOICE:ClassVar = 1500
 
     excel_path: str
     deck: genanki.Deck
@@ -37,6 +41,14 @@ class AnkiGenerator:
 
         # we initiate a packages
         anki_package = genanki.Package(self.deck)
+
+        total_notes = sum(book[sheet].number_of_rows() for sheet in sheet_names)
+
+        if total_notes > self.MAX_NOTES:
+            raise Exception("There is too many notes, it would take too long to process your file")
+
+        if total_notes > self.MAX_NOTES_WITH_VOICE and self.voice_to_speech:
+            raise Exception("There is too many notes with sound to download, it would take too long to process your file")
 
         notes = []
         for sheet_name in sheet_names:

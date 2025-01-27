@@ -12,24 +12,26 @@ template_file = "src/template.xls"
 def main():
     # print("Hello from anki-generator!")
     intro_text = """
-    Hello, you can here convert an excel file into an anki cards deck.
-    Your excel file must be formated as follows:
-    - you can have as many sheets as needed
-    - each sheet has a unique name and a question associated with it
-    - the question must be written in cell B1
-    - a series of question/answers must be written on two columns (A and B), starting row 4
-    - You can raise the difficulty of a sheet. Anki will take the first lines in first order by default, it means that the
-    first questions asked will be the ones on top of your sheets. If you want to make a sheet more difficult and appear later, 
-    you can add a number in cell B2, more the number will be high, later the questions will appear in your deck
-    - on top of each columns, in the 6th row, you can add the code of the language you want your text being read ('en', 'fr', 'nl', etc.),
-    the algorithm will use google to add a sound file to your package.
+    #### You don't know what Anki cards are ?
     
-    Deck ID:
-    **You should always keep the same name for your excel file !!**\\
-    This name will be used to generate the deck id, if you change the excel name, the id will be changed automatically, 
-    and it will be considered as new deck, and not as a new version for the same deck.
+    Check on this website, you can download the app : https://apps.ankiweb.net/
     
-    This apply too for the sheet names, keep the same sheet names, you can change the questions in B1, but always keep the same sheet names.
+    #### What is this website for ?
+    
+    Anki cards allow you to learn anything from a deck of cards. You can find decks online for free, but you can also make your own !
+    This website will allow you to generate your own cards from an **excel file**.
+    
+    #### How to do this ?
+    
+    First create you excel file, always **keep the same file with the same name** when you want to update your deck. If you change the name of the excel file, next time you import the deck, it will be considered as a new one.
+    
+    You can then add as many sheets as you want. For each main question you want to ask, a sheet has to be created. Be careful to keep the same name for the sheet when you recreate you deck, or else it will be considered as a new model of questions.
+    You must write :
+    - in B1, the question you will ask, like "translate this", "answer the following question", or "what is the missing word ?"
+    - in B2, the difficulty, more you put a high number there, later the questions in this sheet will come. **If you don't know, leave blank.**
+    - in B3, you can write 'true' if you want to make a double set of cards and reverse the questions, then you can write in B4 the reverse questions, useful if you want to have to ask for translations both ways for example.
+    - your sets of questions/answers must be written starting from **7** !
+    - if you want to have sounds files attached, you can add in columns **A6 and B6 the code of the languages** you want to translate the column to. You can leave it blank if you don't want any sound.
     """
 
     st.set_page_config(page_title="Anki Generator", page_icon=":material/edit:")
@@ -37,6 +39,8 @@ def main():
     st.title("Anki Generator")
 
     st.markdown(intro_text)
+
+    st.text("Here is an excel file you can use as template, you can copy the first sheet and add as many as you want :")
 
     if os.path.exists(template_file):
         with open(template_file, "rb") as f:
@@ -57,8 +61,6 @@ def main():
 
         anki_generator = AnkiGenerator(excel_path=file_path, voice_to_speech=voice_on)
         anki_path, deck_id = anki_generator.generate_anki()
-        st.write("Your deck has the following ID: {}".format(deck_id))
-
 
         if os.path.exists(anki_path):
             file_name = Path(anki_path).name
