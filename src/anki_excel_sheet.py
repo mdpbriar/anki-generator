@@ -1,5 +1,6 @@
 import os
 import random
+import re
 
 import genanki
 import gtts
@@ -135,7 +136,9 @@ class AnkiExcelSheet:
             ])
 
 
-    def _add_speech_to_package(self, text: str, language_code: str) -> str:
+    def _add_speech_to_package(self, text: str, language_code: str) -> str|None:
+
+        text = re.sub(r'[\\/*?:"<>|]',"",text)
         # we read the text with gtts
         tts = gtts.gTTS(text=text, lang=language_code)
         # we create the file name from the text

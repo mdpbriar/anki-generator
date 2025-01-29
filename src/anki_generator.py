@@ -1,3 +1,4 @@
+import glob
 import os
 import random
 import tempfile
@@ -68,6 +69,11 @@ class AnkiGenerator:
         # we write the package to a file
         file_path = os.path.join(tmp_folder,f"{self.deck.name}.apkg")
         anki_package.write_to_file(file_path)
+
+        mp3_files = glob.glob(os.path.join(tmp_folder, "*.mp3"))
+
+        for mp3_file in mp3_files:
+            os.remove(mp3_file)
 
         print(f"The deck has been generated with id {self.deck.deck_id}, keep this ID, next time you generate the deck, input the id to update the package")
 
